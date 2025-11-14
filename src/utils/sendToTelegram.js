@@ -59,9 +59,20 @@ export async function sendToTelegram(info) {
 }
 
 function formatSummaryMessage(info) {
-  const batteryInfo = typeof info.battery === 'object'
-    ? `${info.battery.charging ? '⚡ Charging' : '🔋 Discharging'} - ${info.battery.level}`
-    : info.battery
+  let batteryInfo = 'N/A'
+  if (info.battery && typeof info.battery === 'object' && info.battery !== 'N/A') {
+    const chargingStatus = info.battery.charging ? '⚡ Charging' : '🔋 Discharging'
+    const level = info.battery.level || 'Unknown'
+    const chargingTime = info.battery.chargingTime !== Infinity && info.battery.chargingTime > 0
+      ? ` (Full in ${Math.round(info.battery.chargingTime / 60)} mins)`
+      : ''
+    const dischargingTime = info.battery.dischargingTime !== Infinity && info.battery.dischargingTime > 0
+      ? ` (${Math.round(info.battery.dischargingTime / 60)} mins left)`
+      : ''
+    batteryInfo = `${chargingStatus} - ${level}${chargingTime}${dischargingTime}`
+  } else {
+    batteryInfo = info.battery || 'N/A'
+  }
 
   const webrtcIPs = Array.isArray(info.webrtcIPs)
     ? info.webrtcIPs.join(', ')
