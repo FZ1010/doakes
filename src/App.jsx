@@ -1,9 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getBrowserInfo } from './utils/getBrowserInfo'
 import { saveToDatabase } from './utils/saveToDatabase'
 import { sendToTelegram } from './utils/sendToTelegram'
 
 export default function App() {
+  const audioRef = useRef(null)
+  const [audioStarted, setAudioStarted] = useState(false)
+
   useEffect(() => {
     async function notifyVisitor() {
       const info = await getBrowserInfo()
@@ -16,6 +19,40 @@ export default function App() {
     }
 
     notifyVisitor()
+
+    // Try to autoplay audio
+    const tryAutoplay = async () => {
+      try {
+        if (audioRef.current) {
+          await audioRef.current.play()
+          setAudioStarted(true)
+        }
+      } catch (err) {
+        console.log('Autoplay blocked, waiting for user interaction')
+      }
+    }
+
+    tryAutoplay()
+
+    // Start audio on any user interaction
+    const startAudio = async () => {
+      if (audioRef.current && !audioStarted) {
+        try {
+          await audioRef.current.play()
+          setAudioStarted(true)
+        } catch (err) {
+          console.error('Error playing audio:', err)
+        }
+      }
+    }
+
+    document.addEventListener('click', startAudio)
+    document.addEventListener('touchstart', startAudio)
+
+    return () => {
+      document.removeEventListener('click', startAudio)
+      document.removeEventListener('touchstart', startAudio)
+    }
   }, [])
 
   return (
@@ -36,10 +73,9 @@ export default function App() {
         {/*</h1>*/}
       </div>
       <audio
-        autoPlay
+        ref={audioRef}
         loop
         playsInline
-
       >
         <source src="/music.mp3" type="audio/mpeg" />
         Your browser does not support the audio tag.

@@ -15,6 +15,7 @@ function getPool() {
   return pool;
 }
 
+
 async function initDb() {
   const pool = getPool();
   const query = `
