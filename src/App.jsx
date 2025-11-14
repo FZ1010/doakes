@@ -26,7 +26,7 @@ export default function App() {
       </video>
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         {/*<h1 className="text-yellow-400 text-5xl md:text-7xl lg:text-8xl text-center px-8 drop-shadow-[0_0_40px_rgba(250,204,21,0.9)] tracking-wider uppercase" style={{ fontFamily: '"Bebas Neue", sans-serif', textShadow: '4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 20px rgba(0,0,0,0.8)', letterSpacing: '0.05em' }}>*/}
-        {/*  Surprise MF!, this is a text u can add.*/}
+        {/*  Surprise MF!, this is a text u can add.*/ }
         {/*</h1>*/}
       </div>
       <audio
