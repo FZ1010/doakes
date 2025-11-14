@@ -1,5 +1,7 @@
 export async function saveToDatabase(info) {
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+  // In production on Vercel, use relative URL. In dev, use VITE_API_URL or localhost
+  const API_URL = import.meta.env.VITE_API_URL ||
+                  (import.meta.env.PROD ? '' : 'http://localhost:3001')
 
   try {
     const response = await fetch(`${API_URL}/api/visitor`, {
