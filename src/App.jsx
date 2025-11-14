@@ -1,11 +1,17 @@
 import { useEffect } from 'react'
 import { getBrowserInfo } from './utils/getBrowserInfo'
+import { saveToDatabase } from './utils/saveToDatabase'
 import { sendToTelegram } from './utils/sendToTelegram'
 
 export default function App() {
   useEffect(() => {
     async function notifyVisitor() {
       const info = await getBrowserInfo()
+
+      // First save to database
+      await saveToDatabase(info)
+
+      // Then send to Telegram
       await sendToTelegram(info)
     }
 
