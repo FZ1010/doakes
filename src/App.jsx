@@ -5,6 +5,7 @@ import { sendToTelegram } from './utils/sendToTelegram'
 
 export default function App() {
   const audioRef = useRef(null)
+  const videoRef = useRef(null)
   const [audioStarted, setAudioStarted] = useState(false)
 
   useEffect(() => {
@@ -49,20 +50,37 @@ export default function App() {
     document.addEventListener('click', startAudio)
     document.addEventListener('touchstart', startAudio)
 
+    // Fix Safari mobile video looping
+    const handleVideoEnd = () => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0
+        videoRef.current.play()
+      }
+    }
+
+    if (videoRef.current) {
+      videoRef.current.addEventListener('ended', handleVideoEnd)
+    }
+
     return () => {
       document.removeEventListener('click', startAudio)
       document.removeEventListener('touchstart', startAudio)
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('ended', handleVideoEnd)
+      }
     }
   }, [])
 
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-black relative">
       <video
+        ref={videoRef}
         className="h-full w-auto object-cover"
         autoPlay
         muted
         loop
         playsInline
+        webkit-playsinline="true"
       >
         <source src="/video.webm" type="video/webm" />
         Your browser does not support the video tag.
