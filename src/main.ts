@@ -1,5 +1,13 @@
 import './style.css'
 
+// Configuration - Update these URLs to your own video and audio files
+const VIDEO_URL = 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+const AUDIO_URL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+
+// You can also use local files in the public directory:
+// const VIDEO_URL = '/video.mp4'
+// const AUDIO_URL = '/music.mp3'
+
 // Initialize the app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   const app = document.querySelector<HTMLDivElement>('#app')!
@@ -20,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             playsinline
             loop
           >
-            <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            <source src="${VIDEO_URL}" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         </div>
@@ -41,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   `
 
   // Setup audio
-  const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')
+  const audio = new Audio(AUDIO_URL)
   audio.loop = true
   audio.volume = 0.3
 
